@@ -77,8 +77,10 @@ $serviciosPermitidos = [
     "Redes y cableado",
     "Mantenimiento",
     "Desarrollo de Software",
-    "Asesoría tecnológica"
+    "Asesoría tecnológica",
+    "Instalación de Cámara de Seguridad"
 ];
+
 
 if (!in_array($servicio, $serviciosPermitidos, true)) {
     echo json_encode([
@@ -113,7 +115,13 @@ try {
 
     // Remitente y destinatario
     $mail->setFrom($config['SMTP_FROM'], $config['SMTP_FROM_NAME']);
-    $mail->addAddress($config['MAIL_TO']);
+    $destinatarios = is_array($config['MAIL_TO'])
+        ? $config['MAIL_TO']
+        : [$config['MAIL_TO']];
+
+    foreach ($destinatarios as $correo) {
+        $mail->addAddress($correo);
+    }
     $mail->addReplyTo($email, $nombre);
 
     // Contenido del correo
