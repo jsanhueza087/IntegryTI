@@ -99,13 +99,13 @@ $mensajeSafe  = nl2br(htmlspecialchars($mensaje, ENT_QUOTES, 'UTF-8'));
 $mail = new PHPMailer(true);
 
 try {
-    // Configuración SMTP Gmail
+    // Configuración SMTP (Hostinger)
     $mail->isSMTP();
     $mail->Host       = $config['SMTP_HOST'];
     $mail->SMTPAuth   = true;
     $mail->Username   = $config['SMTP_USER'];
     $mail->Password   = $config['SMTP_PASS'];
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->SMTPSecure = ((int)$config['SMTP_PORT'] === 465) ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = $config['SMTP_PORT'];
 
     // Charset
